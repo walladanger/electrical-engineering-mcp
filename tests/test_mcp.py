@@ -1,4 +1,5 @@
 import sys
+import sysconfig
 from pathlib import Path
 
 import pytest
@@ -72,7 +73,7 @@ async def test_bad_input_is_tool_error_and_no_numeric_result():
 
 @pytest.mark.asyncio
 async def test_stdio_entry_point_in_a_subprocess():
-    executable = Path(sys.executable).parent / ("electrical-engineering-mcp.exe" if sys.platform == "win32" else "electrical-engineering-mcp")
+    executable = Path(sysconfig.get_path("scripts")) / ("electrical-engineering-mcp.exe" if sys.platform == "win32" else "electrical-engineering-mcp")
     assert executable.is_file(), "install the package with pip install -e '.[test]' before testing"
     params = StdioServerParameters(command=str(executable))
     async with Client(params, read_timeout_seconds=10) as client:
